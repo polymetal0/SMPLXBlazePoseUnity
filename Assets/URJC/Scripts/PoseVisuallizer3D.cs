@@ -20,7 +20,7 @@ public class PoseVisuallizer3D : MonoBehaviour
     public RawImage mirror;
 
     internal BlazePoseModel.JointPoint[] jointPoints;
-    internal float rotation = 180f;
+    internal float rotation;
     // Lines count of body's topology.
     const int BODY_LINE_NUM = 35;
     // Pairs of vertex indices of the lines that make up body's topology.
@@ -137,7 +137,7 @@ public class PoseVisuallizer3D : MonoBehaviour
             jointPoints[PositionIndex.rAnkle.Int()].Transform.Rotate(0, 0, 45);
             jointPoints[PositionIndex.lAnkle.Int()].Transform.Rotate(0, 0, -45);
 
-            jointPoints[PositionIndex.hips.Int()].Transform.Rotate(-15, rotation, 0);
+            jointPoints[PositionIndex.hips.Int()].Transform.Rotate(-15, Test.instance.rotate ? 180f : 0f, 0);
             //jointPoints[PositionIndex.neck.Int()].Transform.Rotate(25, 0, 0);
 
             jointPoints[PositionIndex.head.Int()].Pos3D.x -= 0.02f;

@@ -26,10 +26,12 @@ public class Test : MonoBehaviour
     public GameObject jsonItem;
     public Transform scrollView;
     private string uri = "https://urjc.serveo.net";//"http://127.0.0.1:5000";
+    internal bool rotate;
 
     void Start()
     {
         instance = this;
+        rotate = true;
         _origin = origin;
         //SpawnAvatar();
         //StartCoroutine(GetRequest(uri));
@@ -94,7 +96,7 @@ public class Test : MonoBehaviour
         {
             if (virtualMirror.activeSelf)
             {
-                PoseVisuallizer3D.instance.rotation = 0f;
+                rotate = false;
                 _origin = origin2;
                 SpawnAvatar();
                 SetToGround();
@@ -102,7 +104,7 @@ public class Test : MonoBehaviour
             }
             else
             {
-                PoseVisuallizer3D.instance.rotation = 180f;
+                rotate = true;
                 _origin = origin;
                 SpawnAvatar();
                 SetToGround();
