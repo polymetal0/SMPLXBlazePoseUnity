@@ -19,7 +19,7 @@ public class WebStream : MonoBehaviour
 
     void Start()
     {
-        StartStream();
+        //StartStream();
     }
 
     public void StartStream()
@@ -31,7 +31,7 @@ public class WebStream : MonoBehaviour
     {
         texture = new Texture2D(2, 2);
 
-        //sourceURL = "http://" + ipText.text + ":4747/video";
+        sourceURL = "http://" + ipText.text + ":4747/video";
         // create HTTP request
         HttpWebRequest req = (HttpWebRequest)WebRequest.Create(sourceURL);
         yield return req.GetResponse();

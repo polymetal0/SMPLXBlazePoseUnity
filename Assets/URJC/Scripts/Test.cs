@@ -15,6 +15,8 @@ public class Test : MonoBehaviour
     // Start is called before the first frame update
     //public PoseVisuallizer3D pose;
     public GameObject origin;
+    public GameObject origin2;
+    private GameObject _origin;
     public GameObject mirror;
     public GameObject virtualMirror;
     private SMPLX sample;
@@ -28,6 +30,7 @@ public class Test : MonoBehaviour
     void Start()
     {
         instance = this;
+        _origin = origin;
         //SpawnAvatar();
         //StartCoroutine(GetRequest(uri));
         //sample = FindObjectOfType<SMPLX>();
@@ -46,6 +49,12 @@ public class Test : MonoBehaviour
         mirror.SetActive(false);
         virtualMirror.SetActive(true);
     }
+    
+    public void Hide()
+    {
+        mirror.SetActive(true);
+        virtualMirror.SetActive(false);
+    }
 
     public void SpawnAvatar()
     {
@@ -54,7 +63,7 @@ public class Test : MonoBehaviour
             Destroy(sample.gameObject);
             Debug.Log("avatar destroyed");
         }
-        sample = Instantiate(bodies[bodyType.value], origin.transform.position, Quaternion.identity, origin.transform);
+        sample = Instantiate(bodies[bodyType.value], _origin.transform.position, Quaternion.identity, _origin.transform);
         sample.transform.Rotate(Vector3.up * 180);
         sample.SnapToGroundPlane();
         for (int i = 0; i < 10; i++)
@@ -75,16 +84,35 @@ public class Test : MonoBehaviour
 
     private void SetToGround()
     {
-        var BB = sample.transform.GetComponentInChildren<SkinnedMeshRenderer>().bounds;
-        sample.transform.position += new Vector3(0, BB.size.y * 0.75f, 0);
+        var BB = sample.transform.GetComponentInChildren<SkinnedMeshRenderer>().bounds.size.y;
+        sample.transform.position += new Vector3(0, BB * 0.75f, 0);
+    }
+
+    public void ChangeOrigin() 
+    {
+        if (sample != null)
+        {
+            if (virtualMirror.activeSelf)
+            {
+                PoseVisuallizer3D.instance.rotation = 0f;
+                _origin = origin2;
+                SpawnAvatar();
+                SetToGround();
+                Hide();
+            }
+            else
+            {
+                PoseVisuallizer3D.instance.rotation = 180f;
+                _origin = origin;
+                SpawnAvatar();
+                SetToGround();
+                Show();
+            }
+        }     
     }
 
     public void SetShapes()
     {
-        /*foreach (float beta in sample.betas)
-        {
-            beta = 50.0f;
-        }*/
 
         for (int i = 0; i < 10; i++)
         {
@@ -161,7 +189,7 @@ public class Test : MonoBehaviour
         ListSaved();
     }
 
-    public void LoadData(string name)//FileInfo file)
+    public void LoadData(string name)
     {
         SpawnAvatar();
         using StreamReader reader = new StreamReader(Application.dataPath + Path.AltDirectorySeparatorChar + "/JSON/" + name);
@@ -264,10 +292,9 @@ public class Test : MonoBehaviour
         }
 
         countdown.text = "wait...";
-        // read the screen buffer after rendering is complete
+
         yield return new WaitForEndOfFrame();
 
-        // Create a texture the size of the screen, RGB24 format
         int width = texture.width;
         int height = texture.height;
         Texture2D tex = new Texture2D(width, height);
