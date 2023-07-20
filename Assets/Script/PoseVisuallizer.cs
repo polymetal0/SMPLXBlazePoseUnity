@@ -38,7 +38,7 @@ public class PoseVisuallizer : MonoBehaviour
     }
 
     void LateUpdate(){
-        //inputImageUI.texture = webCamInput.inputImageTexture;
+        inputImageUI.texture = webCamInput.inputImageTexture;
 
         // Predict pose by neural network model.
         detecter.ProcessImage(inputImageUI.texture);// webCamInput.inputImageTexture);
@@ -74,7 +74,7 @@ public class PoseVisuallizer : MonoBehaviour
             marker.transform.localScale = Vector3.one * 0.01f;
             marker.transform.position = detecter.GetPoseLandmark(i) + new Vector4(inputImageUI.transform.position.x, inputImageUI.transform.position.y, inputImageUI.transform.position.z);
         }
-        AddSkeleton(landMarks, lines);
+        //AddSkeleton(landMarks, lines);
 
         Debug.Log("---");
     }
@@ -100,8 +100,6 @@ public class PoseVisuallizer : MonoBehaviour
     void OnRenderObject(){
         var w = inputImageUI.rectTransform.rect.width;
         var h = inputImageUI.rectTransform.rect.height;
-        var d = Camera.main.transform.position.z - inputImageUI.transform.position.z;
-        Debug.Log(d);
         // Use predicted pose landmark results on the ComputeBuffer (GPU) memory.
         material.SetBuffer("_vertices", detecter.outputBuffer);
         // Set pose landmark counts.
