@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-//using UnityEngine.XR;
-using UnityEngine.XR.Hands;
-using UnityEngine.XR.Management;
-using UnityEngine.XR.OpenXR.Input;
 
 public enum PositionIndex : int
 {
@@ -51,12 +47,6 @@ public enum PositionIndex : int
     chest,
     spine,
     hips,
-    lController,
-    rController,
-    lPhantomElbow,
-    rPhantomElbow,
-    centerHead,
-    phantomNose,
 
     Count,
     None,
@@ -99,22 +89,20 @@ public class BlazePoseModel : MonoBehaviour
     public GameObject ModelObject;
     public GameObject Nose;
     public Animator anim;
-    //private Vector3 avatarDimensions;
-    //private Vector3 avatarCenter;
 
     public PoseVisuallizer3D poseVisualizer3D;
-    private XRHandSubsystem _subsystem;
+
+    /*private XRHandSubsystem _subsystem;
     private OpenXRDevice _hmd;
     private XRHand rHand;
-    private XRHand lHand;
+    private XRHand lHand;*/
 
 
-    // Start is called before the first frame update
     void Start()
     {
         poseVisualizer3D = FindObjectOfType<PoseVisuallizer3D>();
 
-        _subsystem =
+        /*_subsystem =
             XRGeneralSettings.Instance?
             .Manager?
             .activeLoader?
@@ -122,7 +110,7 @@ public class BlazePoseModel : MonoBehaviour
 
         _hmd = InputSystem.GetDevice<OpenXRDevice>(CommonUsages.Position);
         lHand = _subsystem.leftHand;//InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
-        rHand = _subsystem.rightHand;//InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+        rHand = _subsystem.rightHand;//InputDevices.GetDeviceAtXRNode(XRNode.RightHand);*/
 
         string[] boneName = HumanTrait.BoneName;
         for (int i = 0; i < HumanTrait.BoneCount; ++i)
@@ -137,14 +125,8 @@ public class BlazePoseModel : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-#if !UNITY_EDITOR
-
-#endif
-        
-
         if (jointPoints != null)
             PoseUpdate();
     }
@@ -157,10 +139,7 @@ public class BlazePoseModel : MonoBehaviour
 
         anim = ModelObject.GetComponent<Animator>();
 
-        /*        //avatarDimensions.x = Vector3.Distance(anim.GetBoneTransform(HumanBodyBones.RightHand).position, anim.GetBoneTransform(HumanBodyBones.LeftHand).position);
-        //avatarDimensions.y = Nose.transform.position.y;
-        //avatarCenter = GetCenter(gameObject);
-
+        /*
         //BONE INDEXING
         // Right Arm
         jointPoints[PositionIndex.rShoulder.Int()].boneIndex = (int)HumanBodyBones.RightUpperArm;
@@ -276,14 +255,10 @@ public class BlazePoseModel : MonoBehaviour
         jointPoints[PositionIndex.rShoulder.Int()].Child = jointPoints[PositionIndex.rElbow.Int()];
         jointPoints[PositionIndex.rElbow.Int()].Child = jointPoints[PositionIndex.rWrist.Int()];
         jointPoints[PositionIndex.rElbow.Int()].Parent = jointPoints[PositionIndex.rShoulder.Int()];
-
         // Left Arm
-
         jointPoints[PositionIndex.lShoulder.Int()].Child = jointPoints[PositionIndex.lElbow.Int()];
         jointPoints[PositionIndex.lElbow.Int()].Child = jointPoints[PositionIndex.lWrist.Int()];
         jointPoints[PositionIndex.lElbow.Int()].Parent = jointPoints[PositionIndex.lShoulder.Int()];
-
-
         // Right Leg
         jointPoints[PositionIndex.rHip.Int()].Child = jointPoints[PositionIndex.rKnee.Int()];
         jointPoints[PositionIndex.rKnee.Int()].Child = jointPoints[PositionIndex.rAnkle.Int()];
@@ -294,7 +269,6 @@ public class BlazePoseModel : MonoBehaviour
         jointPoints[PositionIndex.lKnee.Int()].Child = jointPoints[PositionIndex.lAnkle.Int()];
         jointPoints[PositionIndex.lAnkle.Int()].Child = jointPoints[PositionIndex.lFootIndex.Int()];
         jointPoints[PositionIndex.lAnkle.Int()].Parent = jointPoints[PositionIndex.lKnee.Int()];
-
         // Spine
         jointPoints[PositionIndex.spine.Int()].Child = jointPoints[PositionIndex.chest.Int()];
         jointPoints[PositionIndex.chest.Int()].Child = jointPoints[PositionIndex.neck.Int()];
@@ -369,14 +343,14 @@ public class BlazePoseModel : MonoBehaviour
             jointPoints[PositionIndex.rController.Int()].Pos3D = poseR.position - hmdPos + jointPoints[PositionIndex.Nose.Int()].Pos3D;
             jointPoints[PositionIndex.rController.Int()].Transform.rotation = rHandRot * Quaternion.Euler(new Vector3(0f, 90f, -80f));
         }
-*/
+        */
 
         // movement and rotatation of the center
         var forward = TriangleNormal(jointPoints[PositionIndex.hips.Int()].Pos3D, jointPoints[PositionIndex.lHip.Int()].Pos3D, jointPoints[PositionIndex.rHip.Int()].Pos3D);
 
             jointPoints[PositionIndex.hips.Int()].Transform.position = jointPoints[PositionIndex.hips.Int()].Pos3D + initPosition - jointPositionOffset;
 
-        var rot = (Quaternion.LookRotation(forward) * jointPoints[PositionIndex.hips.Int()].InverseRotation).eulerAngles;
+        /*var rot = (Quaternion.LookRotation(forward) * jointPoints[PositionIndex.hips.Int()].InverseRotation).eulerAngles;
 
         var max = new Vector3(HumanTrait.GetMuscleDefaultMax(HumanTrait.MuscleFromBone((int)HumanBodyBones.Spine, 0)),
             HumanTrait.GetMuscleDefaultMax(HumanTrait.MuscleFromBone((int)HumanBodyBones.Spine, 1)),
@@ -390,7 +364,7 @@ public class BlazePoseModel : MonoBehaviour
         rot.z = Mathf.Clamp(rot.z, jointPoints[PositionIndex.hips.Int()].InitRotation.eulerAngles.z + min.z, jointPoints[PositionIndex.hips.Int()].InitRotation.eulerAngles.z + max.z);
 
         var finalRot = (Quaternion.LookRotation(forward) * jointPoints[PositionIndex.hips.Int()].InverseRotation);
-        finalRot.eulerAngles = rot;
+        finalRot.eulerAngles = rot;*/
 
         jointPoints[PositionIndex.hips.Int()].Transform.rotation = Quaternion.LookRotation(forward) * jointPoints[PositionIndex.hips.Int()].InverseRotation;
 
@@ -414,7 +388,7 @@ public class BlazePoseModel : MonoBehaviour
                  detectedRotation.x = Mathf.Clamp(detectedRotation.x, RoundAngle(jointPoint.InitRotation.eulerAngles.x) + minRotation.x, RoundAngle(jointPoint.InitRotation.eulerAngles.x) + maxRotation.x);
                  detectedRotation.y = Mathf.Clamp(detectedRotation.y, RoundAngle(jointPoint.InitRotation.eulerAngles.y) + minRotation.y, RoundAngle(jointPoint.InitRotation.eulerAngles.y) + maxRotation.y);
                  detectedRotation.z = Mathf.Clamp(detectedRotation.z, RoundAngle(jointPoint.InitRotation.eulerAngles.z) + minRotation.z, RoundAngle(jointPoint.InitRotation.eulerAngles.z) + maxRotation.z);
- */
+                */
                 var finalRotation = Quaternion.LookRotation(jointPoint.Pos3D - jointPoint.Child.Pos3D, fv) * jointPoint.InverseRotation;
                 //finalRotation.eulerAngles = detectedRotation;
 
@@ -441,7 +415,7 @@ public class BlazePoseModel : MonoBehaviour
 
                 var finalRotation = Quaternion.LookRotation(jointPoint.Pos3D - jointPoint.Child.Pos3D, forward) * jointPoint.InverseRotation;
                 finalRotation.eulerAngles = detectedRotation;
-*/
+                */
                 jointPoint.Transform.rotation = Quaternion.LookRotation(jointPoint.Pos3D - jointPoint.Child.Pos3D, forward) * jointPoint.InverseRotation;
             }
         }
@@ -498,7 +472,7 @@ public class BlazePoseModel : MonoBehaviour
 
     float RoundAngle(float angle)
     {
-        return angle > 180 ? angle - 360 : angle;// < -180 ? angle + 360 : angle;
+        return angle > 180 ? angle - 360 : angle;
     }
     Vector3 RoundAngles(Vector3 angles)
     {
@@ -515,6 +489,6 @@ public class BlazePoseModel : MonoBehaviour
             angles.z -= 360;
         }
 
-        return angles;//angle > 180 ? angle - 360 : angle;// < -180 ? angle + 360 : angle;
+        return angles;
     }
 }

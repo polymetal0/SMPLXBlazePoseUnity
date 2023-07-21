@@ -1,8 +1,3 @@
-using SimpleJSON;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,13 +11,7 @@ public class DataLoader : MonoBehaviour
         toggle.group = GetComponentInParent<ToggleGroup>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void LoadData()//FileInfo file)
+    public void LoadData()
     {
         if (toggle.isOn)
         {

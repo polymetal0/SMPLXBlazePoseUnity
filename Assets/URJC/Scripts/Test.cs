@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using UnityEngine.Networking;
-using System.Linq;
 using SimpleJSON;
 using System.IO;
 using System;
@@ -12,8 +9,6 @@ using System;
 public class Test : MonoBehaviour
 {
     public static Test instance;
-    // Start is called before the first frame update
-    //public PoseVisuallizer3D pose;
     public GameObject origin;
     public GameObject origin2;
     private GameObject _origin;
@@ -33,17 +28,9 @@ public class Test : MonoBehaviour
         instance = this;
         rotate = true;
         _origin = origin;
-        //SpawnAvatar();
-        //StartCoroutine(GetRequest(uri));
-        //sample = FindObjectOfType<SMPLX>();
+
         SetPaths();
         ListSaved();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void Show()
@@ -73,14 +60,11 @@ public class Test : MonoBehaviour
             sample.betas[i] = sliders[i].value;
         }
         sample.SetBetaShapes();
-        //Debug.Log("avatar Spawned");
 
         PoseVisuallizer3D.instance.gameObject.SetActive(true);
         PoseVisuallizer3D.instance.model = sample.GetComponent<BlazePoseModel>();
         PoseVisuallizer3D.instance.jointPoints = PoseVisuallizer3D.instance.model.Init();
-        //pose.gameObject.SetActive(true);
-        //pose.model = sample.GetComponent<BlazePoseModel>();
-        //pose.model.Init();
+
         Show();
     }
 
@@ -127,7 +111,6 @@ public class Test : MonoBehaviour
     }
     public void SubmitSliderSetting(int i)
     {
-        //Debug.Log(sliders[i].value);
         sample.betas[i] = sliders[i].value;
         sample.SetBetaShapes();
         //sample.SnapToGroundPlane();

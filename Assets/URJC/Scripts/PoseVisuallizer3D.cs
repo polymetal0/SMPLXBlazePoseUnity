@@ -43,19 +43,10 @@ public class PoseVisuallizer3D : MonoBehaviour
         jointPoints = model.Init();
     }
 
-    void Update(){
-        //mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, 0.1f);
-    }
-
     void LateUpdate(){
-        //inputImageUI.texture = camMirror.webcamTexture;//.inputImageTexture;
-
         // Predict pose by neural network model.
-        detecter.ProcessImage(mirror.texture);// webCamInput.inputImageTexture);
+        detecter.ProcessImage(mirror.texture);
 
-        //var cubo = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        //cubo.transform.position = detecter.GetPoseLandmark(0);
-        //cubo.transform.localScale = Vector3.one * 0.1f;
         if (jointPoints != null)
         {
             // Output landmark values(33 values) and the score whether human pose is visible (1 values).
@@ -140,14 +131,15 @@ public class PoseVisuallizer3D : MonoBehaviour
             jointPoints[PositionIndex.hips.Int()].Transform.Rotate(-15, Test.instance.rotate ? 180f : 0f, 0);
             //jointPoints[PositionIndex.neck.Int()].Transform.Rotate(25, 0, 0);
 
-            jointPoints[PositionIndex.head.Int()].Pos3D.x -= 0.02f;
+            jointPoints[PositionIndex.head.Int()].Pos3D.x += 0.02f;
             jointPoints[PositionIndex.head.Int()].Pos3D.y += 0.05f;
             jointPoints[PositionIndex.head.Int()].Pos3D.z -= 0.05f;
         }
     } 
 
     void OnRenderObject(){
-        /*// Use predicted pose world landmark results on the ComputeBuffer (GPU) memory.
+        /* Descomentar para ver landmarks
+         * // Use predicted pose world landmark results on the ComputeBuffer (GPU) memory.
         material.SetBuffer("_worldVertices", detecter.outputBuffer);
         // Set pose landmark counts.
         material.SetInt("_keypointCount", detecter.vertexCount);
