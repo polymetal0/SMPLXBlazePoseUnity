@@ -111,18 +111,6 @@ public class BlazePoseModel : MonoBehaviour
         _hmd = InputSystem.GetDevice<OpenXRDevice>(CommonUsages.Position);
         lHand = _subsystem.leftHand;//InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
         rHand = _subsystem.rightHand;//InputDevices.GetDeviceAtXRNode(XRNode.RightHand);*/
-
-        string[] boneName = HumanTrait.BoneName;
-        for (int i = 0; i < HumanTrait.BoneCount; ++i)
-        {
-            //Debug.Log(i + " : " + boneName[i]);
-            //Debug.Log(new Vector3(HumanTrait.MuscleFromBone(i, 0),
-                 //HumanTrait.MuscleFromBone(i, 1),
-                 //HumanTrait.MuscleFromBone(i, 2)));
-            //Debug.Log(new Vector3(HumanTrait.GetMuscleDefaultMin(HumanTrait.MuscleFromBone(i, 0)),
-                 //HumanTrait.GetMuscleDefaultMin(HumanTrait.MuscleFromBone(i, 1)),
-                 //HumanTrait.GetMuscleDefaultMin(HumanTrait.MuscleFromBone(i, 2))));
-        }
     }
 
     void Update()
@@ -138,48 +126,6 @@ public class BlazePoseModel : MonoBehaviour
             jointPoints[i] = new JointPoint();
 
         anim = ModelObject.GetComponent<Animator>();
-
-        /*
-        //BONE INDEXING
-        // Right Arm
-        jointPoints[PositionIndex.rShoulder.Int()].boneIndex = (int)HumanBodyBones.RightUpperArm;
-        jointPoints[PositionIndex.rElbow.Int()].boneIndex = (int)HumanBodyBones.RightLowerArm;
-        jointPoints[PositionIndex.rWrist.Int()].boneIndex = (int)HumanBodyBones.RightHand;
-        jointPoints[PositionIndex.rThumb.Int()].boneIndex = (int)HumanBodyBones.RightThumbIntermediate;
-        jointPoints[PositionIndex.rPinky.Int()].boneIndex = (int)HumanBodyBones.RightLittleIntermediate;
-        jointPoints[PositionIndex.rIndex.Int()].boneIndex = (int)HumanBodyBones.RightIndexIntermediate;
-
-        // Left Arm
-        jointPoints[PositionIndex.lShoulder.Int()].boneIndex = (int)HumanBodyBones.LeftUpperArm;
-        jointPoints[PositionIndex.lElbow.Int()].boneIndex = (int)HumanBodyBones.LeftLowerArm;
-        jointPoints[PositionIndex.lWrist.Int()].boneIndex = (int)HumanBodyBones.LeftHand;
-        jointPoints[PositionIndex.lThumb.Int()].boneIndex = (int)HumanBodyBones.LeftThumbIntermediate;
-        jointPoints[PositionIndex.lPinky.Int()].boneIndex = (int)HumanBodyBones.LeftLittleIntermediate;
-        jointPoints[PositionIndex.lIndex.Int()].boneIndex = (int)HumanBodyBones.LeftIndexIntermediate;
-
-        jointPoints[PositionIndex.lEar.Int()].boneIndex = (int)HumanBodyBones.Head;
-        jointPoints[PositionIndex.lEye.Int()].boneIndex = (int)HumanBodyBones.LeftEye;
-        jointPoints[PositionIndex.rEar.Int()].boneIndex = (int)HumanBodyBones.Head;
-        jointPoints[PositionIndex.rEye.Int()].boneIndex = (int)HumanBodyBones.RightEye;
-        //jointPoints[PositionIndex.Nose.Int()].boneIndex = Nose.transform;
-
-        // Right Leg
-        jointPoints[PositionIndex.rHip.Int()].boneIndex = (int)HumanBodyBones.RightUpperLeg;
-        jointPoints[PositionIndex.rKnee.Int()].boneIndex = (int)HumanBodyBones.RightLowerLeg;
-        jointPoints[PositionIndex.rAnkle.Int()].boneIndex = (int)HumanBodyBones.RightFoot;
-        jointPoints[PositionIndex.rFootIndex.Int()].boneIndex = (int)HumanBodyBones.RightToes;
-        // Left Leg
-        jointPoints[PositionIndex.lHip.Int()].boneIndex = (int)HumanBodyBones.LeftUpperLeg;
-        jointPoints[PositionIndex.lKnee.Int()].boneIndex = (int)HumanBodyBones.LeftLowerLeg;
-        jointPoints[PositionIndex.lAnkle.Int()].boneIndex = (int)HumanBodyBones.LeftFoot;
-        jointPoints[PositionIndex.lFootIndex.Int()].boneIndex = (int)HumanBodyBones.LeftToes;
-
-        // Spine
-        jointPoints[PositionIndex.head.Int()].boneIndex = (int)HumanBodyBones.Head;
-        jointPoints[PositionIndex.neck.Int()].boneIndex = (int)HumanBodyBones.Neck;
-        jointPoints[PositionIndex.chest.Int()].boneIndex = (int)HumanBodyBones.Chest;
-        jointPoints[PositionIndex.spine.Int()].boneIndex = (int)HumanBodyBones.Spine;
-        jointPoints[PositionIndex.hips.Int()].boneIndex = (int)HumanBodyBones.Hips;*/
 
         //TRANSFORM
         // Right Arm
@@ -327,44 +273,10 @@ public class BlazePoseModel : MonoBehaviour
     }
     public void PoseUpdate()
     {
-        /*if (hmd.enabled)
-        {
-            //jointPoints[PositionIndex.head.Int()].Transform.rotation = hmdRot;
-            //hmdPos = hmd.
-        }
-        if (lHand.GetJoint(XRHandJointID.Wrist).TryGetPose(out UnityEngine.Pose poseL))
-        {
-            jointPoints[PositionIndex.lController.Int()].Pos3D = poseL.position - hmdPos + jointPoints[PositionIndex.Nose.Int()].Pos3D;
-            jointPoints[PositionIndex.lController.Int()].Transform.rotation = lHandRot * Quaternion.Euler(new Vector3(-180f, -90f, -80f));
-        }
-
-        if (rHand.GetJoint(XRHandJointID.Wrist).TryGetPose(out UnityEngine.Pose poseR))
-        {
-            jointPoints[PositionIndex.rController.Int()].Pos3D = poseR.position - hmdPos + jointPoints[PositionIndex.Nose.Int()].Pos3D;
-            jointPoints[PositionIndex.rController.Int()].Transform.rotation = rHandRot * Quaternion.Euler(new Vector3(0f, 90f, -80f));
-        }
-        */
-
         // movement and rotatation of the center
         var forward = TriangleNormal(jointPoints[PositionIndex.hips.Int()].Pos3D, jointPoints[PositionIndex.lHip.Int()].Pos3D, jointPoints[PositionIndex.rHip.Int()].Pos3D);
 
             jointPoints[PositionIndex.hips.Int()].Transform.position = jointPoints[PositionIndex.hips.Int()].Pos3D + initPosition - jointPositionOffset;
-
-        /*var rot = (Quaternion.LookRotation(forward) * jointPoints[PositionIndex.hips.Int()].InverseRotation).eulerAngles;
-
-        var max = new Vector3(HumanTrait.GetMuscleDefaultMax(HumanTrait.MuscleFromBone((int)HumanBodyBones.Spine, 0)),
-            HumanTrait.GetMuscleDefaultMax(HumanTrait.MuscleFromBone((int)HumanBodyBones.Spine, 1)),
-            HumanTrait.GetMuscleDefaultMax(HumanTrait.MuscleFromBone((int)HumanBodyBones.Spine, 2)));//anim.avatar.humanDescription.human[PositionIndex.lKnee.Int()].limit.max;
-        var min = new Vector3(HumanTrait.GetMuscleDefaultMin(HumanTrait.MuscleFromBone((int)HumanBodyBones.Spine, 0)),
-            HumanTrait.GetMuscleDefaultMin(HumanTrait.MuscleFromBone((int)HumanBodyBones.Spine, 1)),
-            HumanTrait.GetMuscleDefaultMin(HumanTrait.MuscleFromBone((int)HumanBodyBones.Spine, 2)));//anim.avatar.humanDescription.human[PositionIndex.rKnee.Int()].limit.max;
-
-        rot.x = Mathf.Clamp(rot.x, jointPoints[PositionIndex.hips.Int()].InitRotation.eulerAngles.x + min.x, jointPoints[PositionIndex.hips.Int()].InitRotation.eulerAngles.x + max.x);
-        rot.y = Mathf.Clamp(rot.y, jointPoints[PositionIndex.hips.Int()].InitRotation.eulerAngles.y + min.y, jointPoints[PositionIndex.hips.Int()].InitRotation.eulerAngles.y + max.y);
-        rot.z = Mathf.Clamp(rot.z, jointPoints[PositionIndex.hips.Int()].InitRotation.eulerAngles.z + min.z, jointPoints[PositionIndex.hips.Int()].InitRotation.eulerAngles.z + max.z);
-
-        var finalRot = (Quaternion.LookRotation(forward) * jointPoints[PositionIndex.hips.Int()].InverseRotation);
-        finalRot.eulerAngles = rot;*/
 
         jointPoints[PositionIndex.hips.Int()].Transform.rotation = Quaternion.LookRotation(forward) * jointPoints[PositionIndex.hips.Int()].InverseRotation;
 
@@ -374,48 +286,12 @@ public class BlazePoseModel : MonoBehaviour
             if (jointPoint.Parent != null)
             {
                 var fv = jointPoint.Parent.Pos3D - jointPoint.Pos3D;
-                /* var detectedRotation = (Quaternion.LookRotation(jointPoint.Pos3D - jointPoint.Child.Pos3D, fv) * jointPoint.InverseRotation).eulerAngles;
-
-                 detectedRotation = RoundAngles(detectedRotation);
-
-                 var minRotation = new Vector3(HumanTrait.GetMuscleDefaultMin(HumanTrait.MuscleFromBone(jointPoint.boneIndex, 0)),
-                     HumanTrait.GetMuscleDefaultMin(HumanTrait.MuscleFromBone(jointPoint.boneIndex, 1)), 
-                     HumanTrait.GetMuscleDefaultMin(HumanTrait.MuscleFromBone(jointPoint.boneIndex, 2)));
-                 var maxRotation = new Vector3(HumanTrait.GetMuscleDefaultMax(HumanTrait.MuscleFromBone(jointPoint.boneIndex, 0)), 
-                     HumanTrait.GetMuscleDefaultMax(HumanTrait.MuscleFromBone(jointPoint.boneIndex, 1)), 
-                     HumanTrait.GetMuscleDefaultMax(HumanTrait.MuscleFromBone(jointPoint.boneIndex, 2)));
-
-                 detectedRotation.x = Mathf.Clamp(detectedRotation.x, RoundAngle(jointPoint.InitRotation.eulerAngles.x) + minRotation.x, RoundAngle(jointPoint.InitRotation.eulerAngles.x) + maxRotation.x);
-                 detectedRotation.y = Mathf.Clamp(detectedRotation.y, RoundAngle(jointPoint.InitRotation.eulerAngles.y) + minRotation.y, RoundAngle(jointPoint.InitRotation.eulerAngles.y) + maxRotation.y);
-                 detectedRotation.z = Mathf.Clamp(detectedRotation.z, RoundAngle(jointPoint.InitRotation.eulerAngles.z) + minRotation.z, RoundAngle(jointPoint.InitRotation.eulerAngles.z) + maxRotation.z);
-                */
                 var finalRotation = Quaternion.LookRotation(jointPoint.Pos3D - jointPoint.Child.Pos3D, fv) * jointPoint.InverseRotation;
-                //finalRotation.eulerAngles = detectedRotation;
 
                 jointPoint.Transform.rotation = finalRotation;
-                //Debug.Log("Final 0 - 360   " + detectedRotation);
-                //Debug.Log("-180 - 180   " + new Vector3(RoundAngle(detectedRotation.x), RoundAngle(detectedRotation.y), RoundAngle(detectedRotation.z)));
             }
             else if (jointPoint.Child != null)
             {
-                /*var detectedRotation = (Quaternion.LookRotation(jointPoint.Pos3D - jointPoint.Child.Pos3D, forward) * jointPoint.InverseRotation).eulerAngles;
-
-                detectedRotation = RoundAngles(detectedRotation);
-
-                var minRotation = new Vector3(HumanTrait.GetMuscleDefaultMin(HumanTrait.MuscleFromBone(jointPoint.boneIndex, 0)), 
-                    HumanTrait.GetMuscleDefaultMin(HumanTrait.MuscleFromBone(jointPoint.boneIndex, 1)), 
-                    HumanTrait.GetMuscleDefaultMin(HumanTrait.MuscleFromBone(jointPoint.boneIndex, 2)));
-                var maxRotation = new Vector3(HumanTrait.GetMuscleDefaultMax(HumanTrait.MuscleFromBone(jointPoint.boneIndex, 0)), 
-                    HumanTrait.GetMuscleDefaultMax(HumanTrait.MuscleFromBone(jointPoint.boneIndex, 1)), 
-                    HumanTrait.GetMuscleDefaultMax(HumanTrait.MuscleFromBone(jointPoint.boneIndex, 2)));//anim.avatar.humanDescription.human[PositionIndex.rKnee.Int()].limit.max;
-
-                detectedRotation.x = Mathf.Clamp(detectedRotation.x, RoundAngle(jointPoint.InitRotation.eulerAngles.x) + minRotation.x, RoundAngle(jointPoint.InitRotation.eulerAngles.x) + maxRotation.x);
-                detectedRotation.y = Mathf.Clamp(detectedRotation.y, RoundAngle(jointPoint.InitRotation.eulerAngles.y) + minRotation.y, RoundAngle(jointPoint.InitRotation.eulerAngles.y) + maxRotation.y);
-                detectedRotation.z = Mathf.Clamp(detectedRotation.z, RoundAngle(jointPoint.InitRotation.eulerAngles.z) + minRotation.z, RoundAngle(jointPoint.InitRotation.eulerAngles.z) + maxRotation.z);
-
-                var finalRotation = Quaternion.LookRotation(jointPoint.Pos3D - jointPoint.Child.Pos3D, forward) * jointPoint.InverseRotation;
-                finalRotation.eulerAngles = detectedRotation;
-                */
                 jointPoint.Transform.rotation = Quaternion.LookRotation(jointPoint.Pos3D - jointPoint.Child.Pos3D, forward) * jointPoint.InverseRotation;
             }
         }

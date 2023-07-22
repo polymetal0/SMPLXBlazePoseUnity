@@ -66,11 +66,7 @@ public class PoseVisuallizer3D : MonoBehaviour
                 // Debug.LogFormat("{0}: {1}", i, detecter.GetPoseWorldLandmark(i));
                 //if (detecter.GetPoseWorldLandmark(i).w > humanExistThreshold)
                 {
-                    //jointPoints[i].Pos3D.x = -1f * detecter.GetPoseWorldLandmark(i).x * scaling.x;
-                    jointPoints[i].Pos3D = detecter.GetPoseWorldLandmark(i);//.x;// * scaling.x;
-                    //jointPoints[i].Pos3D.y = detecter.GetPoseWorldLandmark(i).y;// * scaling.y;
-                    //jointPoints[i].Pos3D.z = -1f * detecter.GetPoseWorldLandmark(i).z * scaling.z;
-                    //jointPoints[i].Pos3D.z = detecter.GetPoseWorldLandmark(i).z;// * scaling.z;
+                    jointPoints[i].Pos3D = detecter.GetPoseWorldLandmark(i);
                     jointPoints[i].score3D = detecter.GetPoseWorldLandmark(i).w;
 
                     
